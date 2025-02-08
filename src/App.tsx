@@ -9,9 +9,15 @@ import { useCallback, useEffect, useState } from 'react';
 import ConfettiExplosion from 'react-confetti-explosion';
 
 import { Letter } from './components/Letter';
+import { useMediaQueries } from './utils/mediaQueries';
 import { sleep } from './utils/utils';
 
-const content = `Happy Valentines Day Babi!!`
+const content = `Happy Valentines Day Eri!!
+7 months really do fly by when you spend it with such an amazing person.
+I wish I were there with you so we could snuggle the night away! I will make sure to give you plenty of kisses next week!!!
+You single handedly made 2024 the best year of my life and I have no doubt that this year will be as magical if not more!
+Wishing my special person the best Valentines Day ever and for many many many more to come.
+From Other Babi (muah muah muah)`
 
 
 function App() {
@@ -22,6 +28,7 @@ function App() {
   const [showLetter, setShowLetter] = useState(false);
   const angle = useMotionValue(0)
   const angleSpring = useSpring(angle, { stiffness: 100, damping: 10 })
+  const { isSmallScreen } = useMediaQueries()
 
   // Startup animation => Dragging letter to middle
   useEffect(() => {
@@ -29,7 +36,7 @@ function App() {
       // Dragging to middle
       await animate("#envelope",
         { x: ["-50vw", "-40vw", "-40vw", "-30vw", "-30vw", "-20vw", "-20vw", "-10vw", "-10vw", "0"] },
-        { delay: .9, duration: 1, ease: 'easeOut' }
+        { delay: .9, duration: 5, ease: 'easeOut' }
       )
       // Bye bye vacuum with poof
       animate("#vacuum", { opacity: 0 }, { duration: .25 })
@@ -75,16 +82,16 @@ function App() {
       await animate("#paper", { transform: "translateY(50%)" }, { duration: 1, ease: "easeInOut" })
       // Unfold the paper
       animate("#paperfold", { transform: "translateY(1%) rotateX(180deg)" }, { duration: .75, ease: "easeInOut" })
-      await animate("#paper", { transform: "translateY(25%) scale(1.2)", backgroundColor: ["#808080", "#FFFFFF"] }, { duration: .75, ease: "easeInOut" })
+      await animate("#paper", { height: isSmallScreen ? "120%" : undefined, transform: `translateY(25%) scale(1.2)`, backgroundColor: ["#808080", "#FFFFFF"] }, { duration: .75, ease: "easeInOut" })
       setShowLetter(true);
     }
   }, [canOpen, opened])
 
   return (
     <>
-      <div className='bg-black w-screen h-screen'>
+      <div className='bg-black w-screen h-screen overflow-hidden'>
         <div ref={scope} className='w-full h-full flex justify-center items-center'>
-          <motion.div id="envelope" className='rounded-b-xl w-96 h-64 bg-red-500 drop-shadow-md shadow-amber-500 relative'
+          <motion.div id="envelope" className='rounded-b-xl w-60 h-40 sm:w-96 sm:h-64 bg-red-500 drop-shadow-md shadow-amber-500 relative'
             initial={{ x: "-50vw" }}
             onHoverStart={() => handleHover(true)} onHoverEnd={() => handleHover(false)}
             onClick={openLetter}
@@ -92,8 +99,8 @@ function App() {
             <motion.div className="absolute -z-40 w-full h-1/2 bg-red-200 [clip-path:polygon(0%_0%,100%_0%,50%_100%)] transform-3d origin-top" />
             <motion.div id="paper" className="perspective-distant absolute rounded-b-4xl -z-30 w-[95%] left-[2.5%] h-[90%] bottom-1 bg-white">
               <motion.div id="paperfold" className="perspective-distant absolute inset-0 rounded-b-4xl bg-white origin-top" >
-                {showLetter && <div className='p-7 absolute inset-0 w-full rotate-x-180 top-0'>
-                  <Letter size={1} content={content} />
+                {showLetter && <div className={`p-5 sm:p-7 absolute inset-0 w-full rotate-x-180 top-0`}>
+                  <Letter size={isSmallScreen ? .75 : 1} content={content} />
                 </div>}
               </motion.div>
             </motion.div>
@@ -117,7 +124,7 @@ function App() {
             </div>
             <img id="heart" className='m-auto absolute inset-0' width={45} height={45} src={Heart} />
             <div className='absolute bottom-0 w-full pb-10'>
-              {canOpen && <Letter size={2} content="For Eri!!" />}
+              {canOpen && <Letter size={isSmallScreen ? 1.5 : 2} content="For Eri!!" centered={true} />}
             </div>
           </motion.div>
         </div>

@@ -1,24 +1,32 @@
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 
+import { useMediaQueries } from '../utils/mediaQueries';
 import { Character } from './Character';
 
-export const Letter: React.FC<{ content: string, size: number }> = ({ content, size }) => {
+interface LetterProps {
+    content: string
+    size: number
+    centered?: boolean
+}
+
+export const Letter: React.FC<LetterProps> = ({ content, size, centered }) => {
     const [visibleIndex, setVisibleIndex] = useState(0);
+    const { isSmallScreen } = useMediaQueries()
 
     useEffect(() => {
         if (visibleIndex >= content.length) return;
         setTimeout(() => {
             setVisibleIndex(visibleIndex + 1);
-        }, 100);
+        }, 50);
     }, [content, visibleIndex]);
 
     let totalCharCount = 0;
     // Gap between sentences
-    return <motion.div className={`flex w-full justify-center items-center flex-wrap gap-2`}>
+    return <motion.div className={`flex w-full justify-center items-center flex-wrap gap-2 sm:gap-4`}>
         {
             // Gap between words
-            content.split("\n").map(sentence => <div className='flex w-full flex-wrap justify-center items-center gap-2'>
+            content.split("\n").map(sentence => <div key={sentence} className={`flex w-full flex-wrap justify-${centered ? "center" : "start"} items-end gap-1.5 sm:gap-2`}>
                 {
                     sentence.split(" ").map((word) => {
                         // Gap between characters

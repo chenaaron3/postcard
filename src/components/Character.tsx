@@ -32,7 +32,7 @@ export const Character: React.FC<CharacteProps> = ({ className, char, animateSta
             const textModel = new makerJS.models.Text(
                 font['font'],
                 char,
-                25, // fontsize
+                18, // fontsize
                 false, // combine
                 true, // center origin
             )
@@ -69,11 +69,11 @@ export const Character: React.FC<CharacteProps> = ({ className, char, animateSta
     return (
         <svg className={className} style={{
             transform: longCharacters.has(char) ? `translateY(${100 * offset + "%"})` : ""
-        }} width={width * size} height={height * size} viewBox={`0 0 ${width} ${height}`} xmlns="http://www.w3.org/2000/svg" >
+        }} width={width * size} height={height * size} viewBox={`0 0 ${width + .5} ${height + .5}`} xmlns="http://www.w3.org/2000/svg" >
             <g id="svgGroup" strokeLinecap="round" fontSize="1pt" stroke="#000" strokeWidth="0.25mm">
                 <motion.path
                     strokeWidth="1"
-                    strokeDashoffset="5"
+                    strokeDashoffset="0"
                     variants={LETTER_VARIANTS}
                     initial="initial"
                     animate={animateState}
