@@ -1,7 +1,6 @@
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 
-import { useMediaQueries } from '../utils/mediaQueries';
 import { Character } from './Character';
 
 interface LetterProps {
@@ -12,7 +11,6 @@ interface LetterProps {
 
 export const Letter: React.FC<LetterProps> = ({ content, size, centered }) => {
     const [visibleIndex, setVisibleIndex] = useState(0);
-    const { isSmallScreen } = useMediaQueries()
 
     useEffect(() => {
         if (visibleIndex >= content.length) return;

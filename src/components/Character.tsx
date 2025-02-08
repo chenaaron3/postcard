@@ -23,7 +23,6 @@ export const Character: React.FC<CharacteProps> = ({ className, char, animateSta
     const [width, setWidth] = useState(0);
     const [height, setHeight] = useState(0);
     const [offset, setOffset] = useState(0)
-    const [viewbox, setViewBox] = useState("")
 
     useEffect(() => {
         const asyncCall = async () => {
@@ -39,7 +38,8 @@ export const Character: React.FC<CharacteProps> = ({ className, char, animateSta
             for (const i in textModel.models) {
                 textModel.models[i].layer = i;
             }
-            const svg = makerJS.exporter.toSVG(textModel, {
+            // @ts-ignore
+            const svg = makerJS.exporter.toSVG(textModel as any, {
                 fill: false,
                 stroke: true,
                 scalingStroke: false,
@@ -60,7 +60,6 @@ export const Character: React.FC<CharacteProps> = ({ className, char, animateSta
                 setWidth(parseFloat(viewBoxSplit[2]))
                 setHeight(parseFloat(viewBoxSplit[3]))
             }
-            setViewBox(viewBox);
             setPath(pathData)
         }
         asyncCall()
