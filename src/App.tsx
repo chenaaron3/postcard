@@ -117,7 +117,13 @@ function App() {
             <div className='w-full h-full absolute inset-0 justify-center items-start flex'>
               <div className="absolute -top-24 left-1/2">
                 {isExploding && (
-                  <ConfettiExplosion onComplete={() => setIsExploding(false)} />
+                  <ConfettiExplosion colors={[
+                    '#87CEEB',
+                    '#4169E1',
+                    '#40E0D0',
+                    '#6495ED',
+                    '#003366',
+                  ]} onComplete={() => setIsExploding(false)} />
                 )}
               </div>
               <img id="toilet" className='opacity-0 -translate-y-1/2' src={Toilet} />

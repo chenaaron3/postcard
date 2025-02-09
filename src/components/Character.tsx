@@ -2,8 +2,22 @@ import makerJS from 'makerjs';
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 
-import { LETTER_VARIANTS } from './animation';
 import { FONT_TYPES, loadFont } from './Fonts';
+
+const LETTER_VARIANTS = {
+    'initial': {
+        strokeDasharray: 5,
+        opacity: 0,
+        pathLength: 0,
+        fillOpacity: 0,
+    },
+    'animate': {
+        strokeDasharray: 1,
+        opacity: 1,
+        pathLength: 1,
+        transition: { duration: 1, ease: "easeInOut" }
+    },
+}
 
 interface CharacteProps {
     className?: string;
