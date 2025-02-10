@@ -95,7 +95,10 @@ export const Envelope = () => {
     }, [canOpen, opened])
 
     return (
-        <div ref={scope} className='w-full h-full flex justify-center items-center flex-col'>
+        <motion.div
+            ref={scope}
+            exit={{ opacity: 0 }}
+            className='w-full h-full flex justify-center items-center flex-col'>
             <motion.div id="envelope" className='shadow-xl rounded-b-xl w-60 h-40 sm:w-96 sm:h-64 relative'
                 initial={{ x: "-50vw" }}
                 onHoverStart={() => handleHover(true)} onHoverEnd={() => handleHover(false)}
@@ -155,6 +158,6 @@ export const Envelope = () => {
                     </div>
                 </div>
             </motion.div>
-        </div>
+        </motion.div>
     )
 }

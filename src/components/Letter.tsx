@@ -9,15 +9,16 @@ interface LetterProps {
     size: number
     centered?: boolean
     onComplete?: () => void
+    delay?: number
 }
 
-export const Letter: React.FC<LetterProps> = ({ onComplete, content, size, centered }) => {
+export const Letter: React.FC<LetterProps> = ({ onComplete, delay, content, size, centered }) => {
     const [visibleIndex, setVisibleIndex] = useState(0);
 
     useEffect(() => {
         if (visibleIndex >= countNonWhiteSpace(content)) {
             if (onComplete) {
-                sleep(1000).then(() => onComplete());
+                sleep(delay || 1000).then(() => onComplete());
             }
         };
         setTimeout(() => {

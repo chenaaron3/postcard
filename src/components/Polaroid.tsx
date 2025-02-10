@@ -18,7 +18,7 @@ export const Polaroid: FC<PolaroidProps> = ({ src, caption }: PolaroidProps) => 
 
     return <AnimatePresence mode='popLayout'>
         <motion.div
-            key={src}
+            key={src + caption}
             initial={{
                 x: 300,
                 opacity: 0,
@@ -45,18 +45,18 @@ export const Polaroid: FC<PolaroidProps> = ({ src, caption }: PolaroidProps) => 
                 }}
                 transition={{
                     repeat: Infinity,
-                    duration: 10,
+                    duration: 5,
                     delay: Math.random()
                 }}
-                className="origin-top rotate-z-3 p-4 w-54 h-86 min-w-54 min-h-86 flex justify-center items-center flex-col bg-white shadow-xl">
+                className="origin-top border border-black rotate-z-3 p-4 w-54 h-86 min-w-54 min-h-86 flex justify-center items-center flex-col bg-white shadow-xl">
                 <img src={Dot} className='absolute top-0 left-1/2 -translate-x-1/2 size-7'></img>
                 <div className="relative mt-2 w-full min-h-62">
                     <motion.img
-                        className='object-cover h-full object-top brightness-130 contrast-80 saturate-90 sepia-[30%] shadow-[inset_0_0_80px_rgba(0,0,0,0.3)]'
+                        className='object-cover border border-black h-full object-top brightness-130 contrast-80 saturate-90 sepia-[30%] shadow-[inset_0_0_80px_rgba(0,0,0,0.3)]'
                         src={src} />
                     <motion.div
                         style={{ backgroundImage: `url(${noise})` }}
-                        className="absolute inset-0 opacity-15 pointer-events-none" />
+                        className="absolute h-full inset-0 opacity-15 pointer-events-none" />
                 </div>
                 <div className='text-sm m-2 h-full w-full text-center justify-center items-center flex'>
                     <Letter content={caption} centered size={.75} ></Letter>
