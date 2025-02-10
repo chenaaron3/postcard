@@ -1,16 +1,67 @@
-import babi from '/memories/babi.jpeg';
+import Dot from '/dot.png';
 import noise from '/noise.png';
+import { AnimatePresence, motion } from 'motion/react';
+import { FC, useEffect, useState } from 'react';
 
-export const Polaroid = () => {
-    return <div className="fixed top-1/2 p-4 w-54 h-86 flex justify-center items-center flex-col bg-white shadow-xl">
-        <div className="relative mt-2 w-full h-62 ">
-            <img
-                className='object-cover object-top brightness-130 contrast-85 saturate-90 sepia-[30%] shadow-[inset_0_0_80px_rgba(0,0,0,0.3)]'
-                src={babi} />
-            <div style={{ backgroundImage: `url(${noise})` }} className="absolute inset-0 opacity-30 pointer-events-none"></div>
-        </div>
-        <div className='text-lg m-2 h-full w-full text-center justify-center items-center flex'>
-            Thats my babi
-        </div>
-    </div>
+import { Letter } from './Letter';
+
+export interface PolaroidProps {
+    src: string,
+    caption: string
 }
+
+export const Polaroid: FC<PolaroidProps> = ({ src, caption }: PolaroidProps) => {
+    const [angle, setAngle] = useState(0);
+    useEffect(() => {
+        setAngle(Math.random() * 10 - 5);
+    }, [])
+
+    return <AnimatePresence mode='popLayout'>
+        <motion.div
+            key={src}
+            initial={{
+                x: 300,
+                opacity: 0,
+                rotateZ: 45,
+            }}
+            animate={{
+                x: 0,
+                opacity: 1,
+                rotateZ: 0,
+            }}
+            exit={{
+                x: -300,
+                opacity: 0,
+                rotateZ: -45,
+            }}
+            transition={{
+                duration: .5
+            }}
+        >
+            <motion.div
+                style={{ rotateZ: angle }}
+                animate={{
+                    rotateZ: [angle, -1 * angle, angle],
+                }}
+                transition={{
+                    repeat: Infinity,
+                    duration: 10,
+                    delay: Math.random()
+                }}
+                className="origin-top rotate-z-3 p-4 w-54 h-86 min-w-54 min-h-86 flex justify-center items-center flex-col bg-white shadow-xl">
+                <img src={Dot} className='absolute top-0 left-1/2 -translate-x-1/2 size-7'></img>
+                <div className="relative mt-2 w-full min-h-62">
+                    <motion.img
+                        className='object-cover h-full object-top brightness-130 contrast-80 saturate-90 sepia-[30%] shadow-[inset_0_0_80px_rgba(0,0,0,0.3)]'
+                        src={src} />
+                    <motion.div
+                        style={{ backgroundImage: `url(${noise})` }}
+                        className="absolute inset-0 opacity-15 pointer-events-none" />
+                </div>
+                <div className='text-sm m-2 h-full w-full text-center justify-center items-center flex'>
+                    <Letter content={caption} centered size={.75} ></Letter>
+                </div>
+            </motion.div >
+        </motion.div>
+    </AnimatePresence>
+};

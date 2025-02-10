@@ -1,19 +1,25 @@
 import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 
+import { countNonWhiteSpace, sleep } from '../utils/utils';
 import { Character } from './Character';
 
 interface LetterProps {
     content: string
     size: number
     centered?: boolean
+    onComplete?: () => void
 }
 
-export const Letter: React.FC<LetterProps> = ({ content, size, centered }) => {
+export const Letter: React.FC<LetterProps> = ({ onComplete, content, size, centered }) => {
     const [visibleIndex, setVisibleIndex] = useState(0);
 
     useEffect(() => {
-        if (visibleIndex >= content.length) return;
+        if (visibleIndex >= countNonWhiteSpace(content)) {
+            if (onComplete) {
+                sleep(1000).then(() => onComplete());
+            }
+        };
         setTimeout(() => {
             setVisibleIndex(visibleIndex + 1);
         }, 50);

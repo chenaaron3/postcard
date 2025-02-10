@@ -1,15 +1,18 @@
 import Axolotl from '/axolotl.gif';
 import Heart from '/heart.png';
+import Music from '/music.mp3';
 import Poof from '/poof.gif';
 import Toilet from '/toilet.gif';
 import { motion, useAnimate, useMotionValue, useSpring } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 import ConfettiExplosion from 'react-confetti-explosion';
 
+import { usePostcardStore } from '../store';
 import { useMediaQueries } from '../utils/mediaQueries';
 import { sleep } from '../utils/utils';
 import { Letter } from './Letter';
 
+// const content = "Happy Valentines Day!"
 const content = `Happy Valentines Day Eri!!
 7 months really do fly by when you spend it with such an amazing person.
 I wish I were there with you so we could snuggle the night away! I will make sure to give you plenty of kisses next week!!!
@@ -24,9 +27,11 @@ export const Envelope = () => {
     const [opened, setOpened] = useState(false)
     const [isExploding, setIsExploding] = useState(false);
     const [showLetter, setShowLetter] = useState(false);
+    const [letterFinished, setLetterFinished] = useState(false);
     const angle = useMotionValue(0)
     const angleSpring = useSpring(angle, { stiffness: 100, damping: 10 })
     const { isSmallScreen } = useMediaQueries()
+    const openPolaroids = usePostcardStore(state => state.openPolaroids)
 
     // Startup animation => Dragging letter to middle
     useEffect(() => {
@@ -56,6 +61,10 @@ export const Envelope = () => {
     // Open the letter
     const openLetter = useCallback(async () => {
         if (canOpen && !opened) {
+            const audio = new Audio(Music);
+            audio.volume = .75
+            audio.play()
+
             setOpened(true);
             // Open letter
             animate("#flap", { rotateX: 180 }, { duration: 1, ease: 'circOut' })
@@ -86,7 +95,7 @@ export const Envelope = () => {
     }, [canOpen, opened])
 
     return (
-        <div ref={scope} className='w-full h-full flex justify-center items-center'>
+        <div ref={scope} className='w-full h-full flex justify-center items-center flex-col'>
             <motion.div id="envelope" className='shadow-xl rounded-b-xl w-60 h-40 sm:w-96 sm:h-64 relative'
                 initial={{ x: "-50vw" }}
                 onHoverStart={() => handleHover(true)} onHoverEnd={() => handleHover(false)}
@@ -98,9 +107,19 @@ export const Envelope = () => {
                 <motion.div id="paper" className="shadow-xl perspective-distant absolute rounded-b-4xl z-20 w-[95%] left-[2.5%] h-[90%] bottom-1 bg-white">
                     <motion.div id="paperfold" className="perspective-distant absolute inset-0 rounded-b-4xl bg-white origin-top" >
                         {showLetter && <div className={`p-5 sm:p-7 absolute inset-0 w-full rotate-x-180 top-0`}>
-                            <Letter size={isSmallScreen ? .75 : 1} content={content} />
+                            <Letter onComplete={() => setLetterFinished(true)} size={isSmallScreen ? .75 : 1} content={content} />
                         </div>}
                     </motion.div>
+                    {letterFinished && <motion.button
+                        initial={{ opacity: 0, y: -3 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                            duration: .75
+                        }}
+                        onClick={() => openPolaroids()}
+                        className='absolute bottom-2 left-1/2 -translate-x-1/2'>
+                        Close Letter
+                    </motion.button>}
                 </motion.div>
                 {/* Front of envelope */}
                 <motion.div id="cover" className="rounded-b-xl absolute w-full h-full z-30 bg-red-500 [clip-path:polygon(0%_0%,50%_50%,100%_0%,100%_100%,0%_100%)] transform-3d origin-top" />
