@@ -8,7 +8,7 @@ function App() {
 
   return (
     <>
-      <div className='bg-pink-200 h-dvw w-dvw overflow-hidden'>
+      <div className='bg-pink-200 h-dvh w-dvw overflow-hidden'>
         {showPolaroids && <div className='w-full h-full flex flex-col justify-evenly items-center'>
           <Story />
           <Polaroids />
