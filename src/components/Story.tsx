@@ -35,6 +35,8 @@ const lines = [
     "I like how I can trust you completely",
     "I like you babi for who you are and theres only so much I can express in words",
     "I've never met anyone like you, and I'm so grateful to have you in my life",
+    "You are my today and all of my tomorrows",
+    "Now enjoy the rest of the photos!"
 ]
 
 
